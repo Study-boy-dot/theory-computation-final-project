@@ -161,61 +161,6 @@ def show_top3(id,link):
     if send_button_carousel(id,imgs,urls,titles) == "OK":
         return "OK"
 
-def show_bestgame_2021(id):
-    line_bot_api = LineBotApi(channel_access_token)
-    # web crawler ------------------------------------------------
-    link = "https://zh-hant.10besty.com/best-steam-games/"
-    titles,imgs,urls,brieflys = web_crawler(link)
-    # web crawler ------------------------------------------------
-
-    # message packaging ------------------------------------------
-    if send_button_carousel(id,imgs,urls,titles) == "OK":
-        return "OK"
-
-def show_top3_rpg(id):
-    line_bot_api = LineBotApi(channel_access_token)
-    # web crawler ------------------------------------------------
-    link = "https://zh-hant.10besty.com/best-rpg-games/"
-    titles,imgs,urls,brieflys = web_crawler(link)
-    # web crawler ------------------------------------------------
-
-    # message packaging ------------------------------------------
-    if send_button_carousel(id,imgs,urls,titles) == "OK":
-        return "OK"
-    
-def show_top3_slg(id):
-    line_bot_api = LineBotApi(channel_access_token)
-    # web crawler ------------------------------------------------
-    link = "https://zh-hant.10besty.com/best-strategy-games/"
-    titles,imgs,urls,brieflys = web_crawler(link)
-    # web crawler ------------------------------------------------
-
-    # message packaging ------------------------------------------
-    if send_button_carousel(id,imgs,urls,titles) == "OK":
-        return "OK"    
-    
-def show_top3_casual(id):
-    line_bot_api = LineBotApi(channel_access_token)
-    # web crawler ------------------------------------------------
-    link = "https://zh-hant.10besty.com/best-casual-games/"
-    titles,imgs,urls,brieflys = web_crawler(link)
-    # web crawler ------------------------------------------------
-
-    # message packaging ------------------------------------------
-    if send_button_carousel(id,imgs,urls,titles) == "OK":
-        return "OK"
-
-def show_top3_coorperation(id):
-    line_bot_api = LineBotApi(channel_access_token)
-    # web crawler ------------------------------------------------
-    link = "https://zh-hant.10besty.com/best-co-op-games/"
-    titles,imgs,urls,brieflys = web_crawler(link)
-    # web crawler ------------------------------------------------
-
-    # message packaging ------------------------------------------
-    if send_button_carousel(id,imgs,urls,titles) == "OK":
-        return "OK"
-
 def send_briefly_message(event,id,titles,brieflys):
     line_bot_api = LineBotApi(channel_access_token)
     text = event.message.text
