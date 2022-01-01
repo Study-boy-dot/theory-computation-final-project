@@ -3,7 +3,7 @@ from fsm import TocMachine
 def create_machine():
     machine = TocMachine(
         states=["user", "manual","show_bestgame","game_classify",
-                    "rpg","slg","casual","coorperation"],
+                    "rpg","slg","casual","coorperation","fsm"],
                     # "briefly_bestgame","briefly_rpg",
                     # "briefly_slg","briefly_casual",
                     # "briefly_coorperation","state1"],
@@ -37,6 +37,12 @@ def create_machine():
                 "source": "game_classify",
                 "dest": "rpg",
                 "conditions": "is_going_to_rpg",
+            },
+            {
+                "trigger": "advance",
+                "source": "manual",
+                "dest": "fsm",
+                "conditions": "is_going_to_fsm",
             },
             {
                 "trigger": "advance",
@@ -88,7 +94,7 @@ def create_machine():
             {
                 "trigger": "advance", 
                 "source": ["show_bestgame","game_classify",
-                    "rpg","slg","casual","coorperation"], 
+                    "rpg","slg","casual","coorperation","fsm"], 
                 "dest":"manual",
                 "conditions":"is_going_back_to_manual",
             },

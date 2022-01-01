@@ -2,6 +2,7 @@ import os
 from re import template
 import bs4
 from linebot.models.actions import MessageAction
+from linebot.models.messages import TextMessage
 import requests
 import urllib.request as req
 import numpy as np
@@ -14,9 +15,9 @@ from linebot.models import TextSendMessage, ImageSendMessage, TemplateSendMessag
 channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", None)
 
 
-def send_text_message(reply_token, text):
+def send_text_message(id, text):
     line_bot_api = LineBotApi(channel_access_token)
-    line_bot_api.reply_message(reply_token, TextSendMessage(text=text))
+    line_bot_api.push_message(id, TextSendMessage(text))
 
     return "OK"
 
@@ -26,7 +27,7 @@ def send_image_url(id, img_url):
         original_content_url=img_url,
         preview_image_url=img_url
     )
-    line_bot_api.reply_message(id, message)
+    line_bot_api.push_message(id, message)
 
     return "OK"
 
@@ -46,6 +47,10 @@ def show_manual(id):
                         MessageTemplateAction(
                             label='遊戲分類',
                             text='game classify'
+                        ),
+                        MessageTemplateAction(
+                            label='FSM圖',
+                            text='fsm'
                         ),
                     ]
             )

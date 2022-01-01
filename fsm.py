@@ -63,6 +63,10 @@ class TocMachine(GraphMachine):
         else:
             return False
 
+    def is_going_to_fsm(self,event):
+        text = event.message.text
+        return text == "fsm"
+
     def on_enter_manual(self, event):
         print("Entering Manual")
         # reply_token = event.reply_token
@@ -70,10 +74,16 @@ class TocMachine(GraphMachine):
         userid = event.source.user_id
         show_manual(userid)
 
+    def on_enter_fsm(self,event):
+        userid = event.source.user_id
+        link = 'https://i.postimg.cc/tChYL0gq/fsm.png'
+        send_image_url(userid,link)
+        send_text_message(userid,"Type manual to go back to manual")
+
     def on_enter_rpg(self, event):
         print("Entering RPG")
         reply_token = event.reply_token
-        send_text_message(reply_token, "Trigger RPG")
+        # send_text_message(reply_token, "Trigger RPG")
         userid = event.source.user_id
         show_top3_rpg(userid)
         # web crawler ------------------------------------------------
@@ -85,7 +95,7 @@ class TocMachine(GraphMachine):
     def on_enter_slg(self, event):
         print("Entering SLG")
         reply_token = event.reply_token
-        send_text_message(reply_token, "Trigger SLG")
+        # send_text_message(reply_token, "Trigger SLG")
         userid = event.source.user_id
         show_top3_slg(userid)
         # web crawler ------------------------------------------------
@@ -97,7 +107,7 @@ class TocMachine(GraphMachine):
     def on_enter_casual(self, event):
         print("Entering Casual")
         reply_token = event.reply_token
-        send_text_message(reply_token, "Trigger Casual")
+        # send_text_message(reply_token, "Trigger Casual")
         userid = event.source.user_id
         show_top3_casual(userid)
         # web crawler ------------------------------------------------
@@ -109,7 +119,7 @@ class TocMachine(GraphMachine):
     def on_enter_coorperation(self, event):
         print("Entering coorperation")
         reply_token = event.reply_token
-        send_text_message(reply_token, "Trigger coorperation")
+        # send_text_message(reply_token, "Trigger coorperation")
         userid = event.source.user_id
         show_top3_coorperation(userid)
         # web crawler ------------------------------------------------
@@ -121,7 +131,7 @@ class TocMachine(GraphMachine):
     def on_enter_show_bestgame(self, event):
         print("Entering best game 2021")
         reply_token = event.reply_token
-        send_text_message(reply_token, "Trigger show best game")
+        # send_text_message(reply_token, "Trigger show best game")
         userid = event.source.user_id
         show_bestgame_2021(userid)
         # web crawler ------------------------------------------------
@@ -130,67 +140,8 @@ class TocMachine(GraphMachine):
         # web crawler ------------------------------------------------
         send_briefly_message(event,userid,titles,brieflys)
 
-    def on_enter_briefly_bestgame(self, event):
-        print("Entering briefly bestgame")
-        reply_token = event.reply_token
-        send_text_message(reply_token, "Trigger briefly")
-        userid = event.source.user_id
-        # web crawler ------------------------------------------------
-        link = "https://zh-hant.10besty.com/best-steam-games/"
-        titles,unuse2,unuse3,brieflys = web_crawler(link)
-        # web crawler ------------------------------------------------
-        send_briefly_message(event,userid,titles,brieflys)
-        self.go_back()
-
     def on_enter_game_classify(self, event):
         print("Entering game classify")
         userid = event.source.user_id
         send_button_game_classify(userid)
 
-    def on_enter_briefly_rpg(self, event):
-        print("Entering briefly rpg")
-        reply_token = event.reply_token
-        send_text_message(reply_token, "Trigger briefly")
-        userid = event.source.user_id
-        # web crawler ------------------------------------------------
-        link = "https://zh-hant.10besty.com/best-rpg-games/"
-        unuse1,unuse2,unuse3,brieflys = web_crawler(link)
-        # web crawler ------------------------------------------------
-        send_briefly_message(event,userid,brieflys)
-        self.go_back()
-
-    def on_enter_briefly_slg(self, event):
-        print("Entering briefly slg")
-        reply_token = event.reply_token
-        send_text_message(reply_token, "Trigger briefly")
-        userid = event.source.user_id
-        # web crawler ------------------------------------------------
-        link = "https://zh-hant.10besty.com/best-strategy-games/"
-        unuse1,unuse2,unuse3,brieflys = web_crawler(link)
-        # web crawler ------------------------------------------------
-        send_briefly_message(event,userid,brieflys)
-        self.go_back()
-
-    def on_enter_briefly_casual(self, event):
-        print("Entering briefly casual")
-        reply_token = event.reply_token
-        send_text_message(reply_token, "Trigger briefly")
-        userid = event.source.user_id
-        # web crawler ------------------------------------------------
-        link = "https://zh-hant.10besty.com/best-casual-games/"
-        unuse1,unuse2,unuse3,brieflys = web_crawler(link)
-        # web crawler ------------------------------------------------
-        send_briefly_message(event,userid,brieflys)
-        self.go_back()
-
-    def on_enter_briefly_coorperation(self, event):
-        print("Entering briefly coorperation")
-        reply_token = event.reply_token
-        send_text_message(reply_token, "Trigger briefly")
-        userid = event.source.user_id
-        # web crawler ------------------------------------------------
-        link = "https://zh-hant.10besty.com/best-co-op-games/"
-        unuse1,unuse2,unuse3,brieflys = web_crawler(link)
-        # web crawler ------------------------------------------------
-        send_briefly_message(event,userid,brieflys)
-        self.go_back()
