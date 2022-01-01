@@ -26,7 +26,7 @@ class TocMachine(GraphMachine):
 
     def is_going_to_manual(self,event):
         text = event.message.text
-        return text.lower() == "manual"
+        return True
 
     def is_going_to_show_bestgame(self,event):
         text = event.message.text
@@ -76,69 +76,84 @@ class TocMachine(GraphMachine):
 
     def on_enter_fsm(self,event):
         userid = event.source.user_id
-        link = 'https://i.postimg.cc/tChYL0gq/fsm.png'
+        link = 'https://i.postimg.cc/V6w22mFt/fsm.png'
         send_image_url(userid,link)
         send_text_message(userid,"Type manual to go back to manual")
 
     def on_enter_rpg(self, event):
         print("Entering RPG")
+        text = event.message.text
         reply_token = event.reply_token
         # send_text_message(reply_token, "Trigger RPG")
         userid = event.source.user_id
-        show_top3_rpg(userid)
-        # web crawler ------------------------------------------------
         link = "https://zh-hant.10besty.com/best-rpg-games/"
-        titles,unuse2,unuse3,brieflys = web_crawler(link)
-        # web crawler ------------------------------------------------
-        send_briefly_message(event,userid,titles,brieflys)
+        if(text[-4:] != "內容簡介"):
+            show_top3(userid,link)
+        else:
+            # web crawler ------------------------------------------------
+            titles,unuse2,unuse3,brieflys = web_crawler(link)
+            # web crawler ------------------------------------------------
+            send_briefly_message(event,userid,titles,brieflys)
 
     def on_enter_slg(self, event):
         print("Entering SLG")
         reply_token = event.reply_token
         # send_text_message(reply_token, "Trigger SLG")
         userid = event.source.user_id
-        show_top3_slg(userid)
-        # web crawler ------------------------------------------------
+        text = event.message.text
         link = "https://zh-hant.10besty.com/best-strategy-games/"
-        titles,unuse2,unuse3,brieflys = web_crawler(link)
-        # web crawler ------------------------------------------------
-        send_briefly_message(event,userid,titles,brieflys)
+        if(text[-4:] != "內容簡介"):
+            show_top3(userid,link)
+        else:
+            # web crawler ------------------------------------------------
+            titles,unuse2,unuse3,brieflys = web_crawler(link)
+            # web crawler ------------------------------------------------
+            send_briefly_message(event,userid,titles,brieflys)
 
     def on_enter_casual(self, event):
         print("Entering Casual")
         reply_token = event.reply_token
         # send_text_message(reply_token, "Trigger Casual")
         userid = event.source.user_id
-        show_top3_casual(userid)
-        # web crawler ------------------------------------------------
+        text = event.message.text
         link = "https://zh-hant.10besty.com/best-casual-games/"
-        titles,unuse2,unuse3,brieflys = web_crawler(link)
-        # web crawler ------------------------------------------------
-        send_briefly_message(event,userid,titles,brieflys)
+        if(text[-4:] != "內容簡介"):
+            show_top3(userid,link)
+        else:
+            # web crawler ------------------------------------------------
+            titles,unuse2,unuse3,brieflys = web_crawler(link)
+            # web crawler ------------------------------------------------
+            send_briefly_message(event,userid,titles,brieflys)
 
     def on_enter_coorperation(self, event):
         print("Entering coorperation")
         reply_token = event.reply_token
         # send_text_message(reply_token, "Trigger coorperation")
         userid = event.source.user_id
-        show_top3_coorperation(userid)
-        # web crawler ------------------------------------------------
+        text = event.message.text
         link = "https://zh-hant.10besty.com/best-co-op-games/"
-        titles,unuse2,unuse3,brieflys = web_crawler(link)
-        # web crawler ------------------------------------------------
-        send_briefly_message(event,userid,titles,brieflys)
+        if(text[-4:] != "內容簡介"):
+            show_top3(userid,link)
+        else:
+            # web crawler ------------------------------------------------
+            titles,unuse2,unuse3,brieflys = web_crawler(link)
+            # web crawler ------------------------------------------------
+            send_briefly_message(event,userid,titles,brieflys)
 
     def on_enter_show_bestgame(self, event):
         print("Entering best game 2021")
         reply_token = event.reply_token
         # send_text_message(reply_token, "Trigger show best game")
-        userid = event.source.user_id
-        show_bestgame_2021(userid)
-        # web crawler ------------------------------------------------
         link = "https://zh-hant.10besty.com/best-steam-games/"
-        titles,unuse2,unuse3,brieflys = web_crawler(link)
-        # web crawler ------------------------------------------------
-        send_briefly_message(event,userid,titles,brieflys)
+        text = event.message.text
+        userid = event.source.user_id
+        if(text[-4:] != "內容簡介"):
+            show_top3(userid,link)
+        else:
+            # web crawler ------------------------------------------------
+            titles,unuse2,unuse3,brieflys = web_crawler(link)
+            # web crawler ------------------------------------------------
+            send_briefly_message(event,userid,titles,brieflys)
 
     def on_enter_game_classify(self, event):
         print("Entering game classify")
