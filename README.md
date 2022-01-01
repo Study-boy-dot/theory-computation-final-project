@@ -48,6 +48,11 @@ Send image in linebot
 
 ### Tips
 Type manual to back to manual state
+pygraphviz problem in heroku
+run commands below can solve the problems
+
+heroku buildpacks:set heroku/python
+heroku buildpacks:add --index 1 heroku-community/apt
 
 ### Addition Function
 Web-crawler
