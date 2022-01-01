@@ -151,6 +151,16 @@ def send_button_game_classify(id):
 
     return "OK"
 
+def show_top3(id,link):
+    line_bot_api = LineBotApi(channel_access_token)
+    # web crawler ------------------------------------------------
+    titles,imgs,urls,brieflys = web_crawler(link)
+    # web crawler ------------------------------------------------
+
+    # message packaging ------------------------------------------
+    if send_button_carousel(id,imgs,urls,titles) == "OK":
+        return "OK"
+
 def show_bestgame_2021(id):
     line_bot_api = LineBotApi(channel_access_token)
     # web crawler ------------------------------------------------
