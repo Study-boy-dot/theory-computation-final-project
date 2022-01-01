@@ -48,10 +48,31 @@ Send image in linebot
 
 ### Tips
 Type manual to back to manual state
+
+Add local project to Heroku project
+
+heroku git:remote -a {HEROKU_APP_NAME}
+
+Upload project
+
+git add .
+
+git commit -m "Add code"
+
+git push -f heroku master
+
+Set Environment - Line Messaging API Secret Keys
+
+heroku config:set LINE_CHANNEL_SECRET=your_line_channel_secret
+
+heroku config:set LINE_CHANNEL_ACCESS_TOKEN=your_line_channel_access_token
+
 pygraphviz problem in heroku
+
 run commands below can solve the problems
 
 heroku buildpacks:set heroku/python
+
 heroku buildpacks:add --index 1 heroku-community/apt
 
 ### Addition Function
