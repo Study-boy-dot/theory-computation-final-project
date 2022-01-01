@@ -1,159 +1,62 @@
-# TOC Project 2020
+# TOC Project 2021
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/dc7fa47fcd809b99d087/maintainability)](https://codeclimate.com/github/NCKU-CCS/TOC-Project-2020/maintainability)
+## Finite State Machine Graph
+<img src='https://user-images.githubusercontent.com/80616480/147854848-508b1540-dd96-4d17-abe9-df56af42f013.png' width = 1000/>
 
-[![Known Vulnerabilities](https://snyk.io/test/github/NCKU-CCS/TOC-Project-2020/badge.svg)](https://snyk.io/test/github/NCKU-CCS/TOC-Project-2020)
+## Run locaklly
+Run python file app.py
+Run with ngrok port 8000
+Edit linedeveloper webhook url and postfixe with /webhook
 
+## My Linebot
+First in user state enter any key to access manual
 
-Template Code for TOC Project 2020
+<img src='https://user-images.githubusercontent.com/80616480/147855085-9391b4ba-8d07-4221-b087-02a8fcb0e17c.jpg' width = 300/>
 
-A Line bot based on a finite state machine
+### Three option to choose in manual state
+#### First show the top 3 best games in 2021
+Show in carousel columd mode
+button below which is the description and the link of the game to steam
 
-More details in the [Slides](https://hackmd.io/@TTW/ToC-2019-Project#) and [FAQ](https://hackmd.io/s/B1Xw7E8kN)
+<img src='https://user-images.githubusercontent.com/80616480/147855093-59295d59-e220-455a-813e-82b983eec142.jpg' width = 300/>
 
-## Setup
+#### Description
 
-### Prerequisite
-* Python 3.6
-* Pipenv
-* Facebook Page and App
-* HTTPS Server
+<img src='https://user-images.githubusercontent.com/80616480/147855128-708be69c-ecd0-4ccf-80e0-62a03bb27127.jpg' width = 300/>
 
-#### Install Dependency
-```sh
-pip3 install pipenv
+#### Link to buy
 
-pipenv --three
+<img src='https://user-images.githubusercontent.com/80616480/147855135-3b699432-d9f3-4194-901f-43a3ce593379.jpg' width = 300/>
 
-pipenv install
+#### Second show the category
+1. RPG
+2. SLG
+3. Casual
+4. Co-op
 
-pipenv shell
-```
+in state above which can see the description of these games and the link of these games in steam
+#### Category
 
-* pygraphviz (For visualizing Finite State Machine)
-    * [Setup pygraphviz on Ubuntu](http://www.jianshu.com/p/a3da7ecc5303)
-	* [Note: macOS Install error](https://github.com/pygraphviz/pygraphviz/issues/100)
+<img src='https://user-images.githubusercontent.com/80616480/147855179-cb5e5f99-3fec-41f3-be99-203f6f40e029.jpg' width = 300/>
 
+<img src='https://user-images.githubusercontent.com/80616480/147855181-2f74d7d1-eb13-4417-9300-8af7bfc38603.jpg' width = 300/>
 
-#### Secret Data
-You should generate a `.env` file to set Environment Variables refer to our `.env.sample`.
-`LINE_CHANNEL_SECRET` and `LINE_CHANNEL_ACCESS_TOKEN` **MUST** be set to proper values.
-Otherwise, you might not be able to run your code.
+#### Third show the FSM graph of this linebot
+Send image in linebot
 
-#### Run Locally
-You can either setup https server or using `ngrok` as a proxy.
+<img src='https://user-images.githubusercontent.com/80616480/147855283-7f7bd2e8-b336-4abd-9209-87ce781eacf6.jpg' width = 300/>
 
-#### a. Ngrok installation
-* [ macOS, Windows, Linux](https://ngrok.com/download)
+### Tips
+Type manual to back to manual state
 
-or you can use Homebrew (MAC)
-```sh
-brew cask install ngrok
-```
+### Addition Function
+Web-crawler
+Send image
 
-**`ngrok` would be used in the following instruction**
-
-```sh
-ngrok http 8000
-```
-
-After that, `ngrok` would generate a https URL.
-
-#### Run the sever
-
-```sh
-python3 app.py
-```
-
-#### b. Servo
-
-Or You can use [servo](http://serveo.net/) to expose local servers to the internet.
-
-
-## Finite State Machine
-![fsm](./img/show-fsm.png)
-
-## Usage
-The initial state is set to `user`.
-
-Every time `user` state is triggered to `advance` to another state, it will `go_back` to `user` state after the bot replies corresponding message.
-
-* user
-	* Input: "go to state1"
-		* Reply: "I'm entering state1"
-
-	* Input: "go to state2"
-		* Reply: "I'm entering state2"
-
-## Deploy
-Setting to deploy webhooks on Heroku.
-
-### Heroku CLI installation
-
-* [macOS, Windows](https://devcenter.heroku.com/articles/heroku-cli)
-
-or you can use Homebrew (MAC)
-```sh
-brew tap heroku/brew && brew install heroku
-```
-
-or you can use Snap (Ubuntu 16+)
-```sh
-sudo snap install --classic heroku
-```
-
-### Connect to Heroku
-
-1. Register Heroku: https://signup.heroku.com
-
-2. Create Heroku project from website
-
-3. CLI Login
-
-	`heroku login`
-
-### Upload project to Heroku
-
-1. Add local project to Heroku project
-
-	heroku git:remote -a {HEROKU_APP_NAME}
-
-2. Upload project
-
-	```
-	git add .
-	git commit -m "Add code"
-	git push -f heroku master
-	```
-
-3. Set Environment - Line Messaging API Secret Keys
-
-	```
-	heroku config:set LINE_CHANNEL_SECRET=your_line_channel_secret
-	heroku config:set LINE_CHANNEL_ACCESS_TOKEN=your_line_channel_access_token
-	```
-
-4. Your Project is now running on Heroku!
-
-	url: `{HEROKU_APP_NAME}.herokuapp.com/callback`
-
-	debug command: `heroku logs --tail --app {HEROKU_APP_NAME}`
-
-5. If fail with `pygraphviz` install errors
-
-	run commands below can solve the problems
-	```
-	heroku buildpacks:set heroku/python
-	heroku buildpacks:add --index 1 heroku-community/apt
-	```
-
-	refference: https://hackmd.io/@ccw/B1Xw7E8kN?type=view#Q2-如何在-Heroku-使用-pygraphviz
-
-## Reference
-[Pipenv](https://medium.com/@chihsuan/pipenv-更簡單-更快速的-python-套件管理工具-135a47e504f4) ❤️ [@chihsuan](https://github.com/chihsuan)
-
-[TOC-Project-2019](https://github.com/winonecheng/TOC-Project-2019) ❤️ [@winonecheng](https://github.com/winonecheng)
-
-Flask Architecture ❤️ [@Sirius207](https://github.com/Sirius207)
-
-[Line line-bot-sdk-python](https://github.com/line/line-bot-sdk-python/tree/master/examples/flask-echo)
+##References
+https://zh-hant.10besty.com/best-steam-games/
+https://zh-hant.10besty.com/best-strategy-games/
+https://zh-hant.10besty.com/best-co-op-games/
+https://zh-hant.10besty.com/best-casual-games/
+https://zh-hant.10besty.com/best-rpg-games/
+https://cdn.akamai.steamstatic.com/steamcommunity/public/images/clans/27766192/6da8a65fb75742d808f12ab05b2453b56193e65c/schinese.jpg?t=1640734552
