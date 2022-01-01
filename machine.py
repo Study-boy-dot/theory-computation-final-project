@@ -4,9 +4,6 @@ def create_machine():
     machine = TocMachine(
         states=["user", "manual","show_bestgame","game_classify",
                     "rpg","slg","casual","coorperation","fsm"],
-                    # "briefly_bestgame","briefly_rpg",
-                    # "briefly_slg","briefly_casual",
-                    # "briefly_coorperation","state1"],
         transitions=[
             {
                 "trigger": "advance",
@@ -86,11 +83,6 @@ def create_machine():
                 "dest": "coorperation",
                 "conditions": "is_going_to_briefly_coorperation",
             },
-            # {"trigger": "go_back", "source": "briefly_bestgame", "dest": "show_bestgame"},
-            # {"trigger": "go_back", "source": ["briefly_rpg"], "dest": "rpg"},
-            # {"trigger": "go_back", "source": ["briefly_slg"], "dest": "slg"},
-            # {"trigger": "go_back", "source": ["briefly_casual"], "dest": "casual"},
-            # {"trigger": "go_back", "source": ["briefly_coorperation"], "dest": "coorperation"},
             {
                 "trigger": "advance", 
                 "source": ["show_bestgame","game_classify",

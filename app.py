@@ -93,7 +93,7 @@ def webhook_handler():
         #print(f"\nFSM STATE: {machines[event.source.user_id].state}")
 
         if response == False:
-            send_text_message(event.reply_token, "Invalid command, try again")
+            send_text_message(event.source.user_id, "Invalid command, try again")
 
     return "OK"
 

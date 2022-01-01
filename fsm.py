@@ -1,6 +1,6 @@
 from transitions.extensions import GraphMachine
 from utils import *
-from utils import send_button_carousel,send_button_game_classify, send_text_message,show_bestgame_2021,show_manual
+# from utils import send_button_carousel,send_button_game_classify, send_text_message,show_bestgame_2021,show_manual
 from linebot.models import TextSendMessage, ImageSendMessage, TemplateSendMessage, ImageCarouselColumn, ImageCarouselTemplate, ButtonsTemplate, MessageTemplateAction, URITemplateAction, ImageSendMessage, CarouselTemplate, CarouselColumn
 
 
