@@ -8,33 +8,13 @@ from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 
 from fsm import TocMachine
+from machine import create_machine
 from utils import send_text_message
 
 load_dotenv()
 
-
-machine = TocMachine(
-    states=["user", "state1", "state2"],
-    transitions=[
-        {
-            "trigger": "advance",
-            "source": "user",
-            "dest": "state1",
-            "conditions": "is_going_to_state1",
-        },
-        {
-            "trigger": "advance",
-            "source": "user",
-            "dest": "state2",
-            "conditions": "is_going_to_state2",
-        },
-        {"trigger": "go_back", "source": ["state1", "state2"], "dest": "user"},
-    ],
-    initial="user",
-    auto_transitions=False,
-    show_conditions=True,
-)
-
+machines={}
+machine=create_machine()
 app = Flask(__name__, static_url_path="")
 
 
@@ -100,9 +80,17 @@ def webhook_handler():
             continue
         if not isinstance(event.message.text, str):
             continue
-        print(f"\nFSM STATE: {machine.state}")
-        print(f"REQUEST BODY: \n{body}")
-        response = machine.advance(event)
+        
+        # print(f"REQUEST BODY: \n{body}")
+
+        # Create a machine for new user
+        if event.source.user_id not in machines:
+            machines[event.source.user_id] = create_machine()
+
+        response = machines[event.source.user_id].advance(event)
+
+        #print(f"\nFSM STATE: {machines[event.source.user_id].state}")
+
         if response == False:
             send_text_message(event.reply_token, "Not Entering any State")
 
@@ -111,10 +99,11 @@ def webhook_handler():
 
 @app.route("/show-fsm", methods=["GET"])
 def show_fsm():
-    machine.get_graph().draw("fsm.png", prog="dot", format="png")
+    machines.get_graph().draw("fsm.png", prog="dot", format="png")
     return send_file("fsm.png", mimetype="image/png")
 
 
 if __name__ == "__main__":
     port = os.environ.get("PORT", 8000)
     app.run(host="0.0.0.0", port=port, debug=True)
+
