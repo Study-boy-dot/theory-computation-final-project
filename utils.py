@@ -35,7 +35,7 @@ def show_manual(id):
     message = TemplateSendMessage(
         alt_text='Manual template',
         template=ButtonsTemplate(
-                    thumbnail_image_url='https://cdn.nba.net/nba-drupal-prod/2019-09/SEO-image-NBA-logoman.jpg',
+                    thumbnail_image_url='https://cdn.akamai.steamstatic.com/steamcommunity/public/images/clans/27766192/6da8a65fb75742d808f12ab05b2453b56193e65c/schinese.jpg?t=1640734552',
                     title='遊戲推薦',
                     text='遊戲查詢',
                     actions=[
@@ -118,7 +118,7 @@ def send_button_game_classify(id):
     message = TemplateSendMessage(
         alt_text='Carousel template',
         template=ButtonsTemplate(
-                    thumbnail_image_url='https://cdn.nba.net/nba-drupal-prod/2019-09/SEO-image-NBA-logoman.jpg',
+                    thumbnail_image_url='https://cdn.akamai.steamstatic.com/steamcommunity/public/images/clans/27766192/6da8a65fb75742d808f12ab05b2453b56193e65c/schinese.jpg?t=1640734552',
                     title='遊戲類型',
                     text='你喜歡玩什麼類型的遊戲？',
                     actions=[
@@ -201,15 +201,15 @@ def show_top3_coorperation(id):
     if send_button_carousel(id,imgs,urls,titles) == "OK":
         return "OK"
 
-def send_briefly_message(event,id,brieflys):
+def send_briefly_message(event,id,titles,brieflys):
     line_bot_api = LineBotApi(channel_access_token)
     text = event.message.text
     if text[1] == '1':
-        line_bot_api.push_message(id,TextSendMessage(brieflys[0]))
+        line_bot_api.push_message(id,TextSendMessage(titles[0]+" -- "+brieflys[0]))
     elif text[1] == '2':
-        line_bot_api.push_message(id,TextSendMessage(brieflys[1]))
+        line_bot_api.push_message(id,TextSendMessage(titles[1]+" -- "+brieflys[1]))
     elif text[1] == '3':
-        line_bot_api.push_message(id,TextSendMessage(brieflys[2]))
+        line_bot_api.push_message(id,TextSendMessage(titles[2]+" -- "+brieflys[2]))
     else:
         return "NOT OK"
 

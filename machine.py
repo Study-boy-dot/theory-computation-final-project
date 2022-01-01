@@ -3,10 +3,10 @@ from fsm import TocMachine
 def create_machine():
     machine = TocMachine(
         states=["user", "manual","show_bestgame","game_classify",
-                    "rpg","slg","casual","coorperation",
-                    "briefly_bestgame","briefly_rpg",
-                    "briefly_slg","briefly_casual",
-                    "briefly_coorperation"],
+                    "rpg","slg","casual","coorperation"],
+                    # "briefly_bestgame","briefly_rpg",
+                    # "briefly_slg","briefly_casual",
+                    # "briefly_coorperation","state1"],
         transitions=[
             {
                 "trigger": "advance",
@@ -23,7 +23,7 @@ def create_machine():
             {
                 "trigger": "advance",
                 "source": "show_bestgame",
-                "dest": "briefly_bestgame",
+                "dest": "show_bestgame",
                 "conditions": "is_going_to_briefly_bestgame",
             },
             {
@@ -41,7 +41,7 @@ def create_machine():
             {
                 "trigger": "advance",
                 "source": "rpg",
-                "dest": "briefly_rpg",
+                "dest": "rpg",
                 "conditions": "is_going_to_briefly_rpg",
             },
             {
@@ -53,7 +53,7 @@ def create_machine():
             {
                 "trigger": "advance",
                 "source": "slg",
-                "dest": "briefly_slg",
+                "dest": "slg",
                 "conditions": "is_going_to_briefly_slg",
             },
             {
@@ -65,7 +65,7 @@ def create_machine():
             {
                 "trigger": "advance",
                 "source": "casual",
-                "dest": "briefly_casual",
+                "dest": "casual",
                 "conditions": "is_going_to_briefly_casual",
             },
             {
@@ -77,15 +77,21 @@ def create_machine():
             {
                 "trigger": "advance",
                 "source": "coorperation",
-                "dest": "briefly_coorperation",
+                "dest": "coorperation",
                 "conditions": "is_going_to_briefly_coorperation",
             },
-            {"trigger": "go_back", "source": "rpg", "dest": "user"},
-            {"trigger": "go_back", "source": "briefly_bestgame", "dest": "show_bestgame"},
-            {"trigger": "go_back", "source": ["briefly_rpg"], "dest": "rpg"},
-            {"trigger": "go_back", "source": ["briefly_slg"], "dest": "slg"},
-            {"trigger": "go_back", "source": ["briefly_casual"], "dest": "casual"},
-            {"trigger": "go_back", "source": ["briefly_coorperation"], "dest": "coorperation"},
+            # {"trigger": "go_back", "source": "briefly_bestgame", "dest": "show_bestgame"},
+            # {"trigger": "go_back", "source": ["briefly_rpg"], "dest": "rpg"},
+            # {"trigger": "go_back", "source": ["briefly_slg"], "dest": "slg"},
+            # {"trigger": "go_back", "source": ["briefly_casual"], "dest": "casual"},
+            # {"trigger": "go_back", "source": ["briefly_coorperation"], "dest": "coorperation"},
+            {
+                "trigger": "advance", 
+                "source": ["show_bestgame","game_classify",
+                    "rpg","slg","casual","coorperation"], 
+                "dest":"manual",
+                "conditions":"is_going_back_to_manual",
+            },
         ],
         initial="user",
         auto_transitions=False,

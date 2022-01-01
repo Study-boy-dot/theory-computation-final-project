@@ -56,10 +56,17 @@ class TocMachine(GraphMachine):
         text = event.message.text
         return text.lower()[-4:] == "內容簡介"
 
+    def is_going_back_to_manual(self,event):
+        text = event.message.text
+        if text.lower() == "manual" or text.lower() == "回到manual":
+            return True
+        else:
+            return False
+
     def on_enter_manual(self, event):
         print("Entering Manual")
-        reply_token = event.reply_token
-        send_text_message(reply_token, "Trigger manual")
+        # reply_token = event.reply_token
+        # send_text_message(reply_token, "Trigger manual")
         userid = event.source.user_id
         show_manual(userid)
 
@@ -69,6 +76,11 @@ class TocMachine(GraphMachine):
         send_text_message(reply_token, "Trigger RPG")
         userid = event.source.user_id
         show_top3_rpg(userid)
+        # web crawler ------------------------------------------------
+        link = "https://zh-hant.10besty.com/best-rpg-games/"
+        titles,unuse2,unuse3,brieflys = web_crawler(link)
+        # web crawler ------------------------------------------------
+        send_briefly_message(event,userid,titles,brieflys)
 
     def on_enter_slg(self, event):
         print("Entering SLG")
@@ -76,6 +88,11 @@ class TocMachine(GraphMachine):
         send_text_message(reply_token, "Trigger SLG")
         userid = event.source.user_id
         show_top3_slg(userid)
+        # web crawler ------------------------------------------------
+        link = "https://zh-hant.10besty.com/best-strategy-games/"
+        titles,unuse2,unuse3,brieflys = web_crawler(link)
+        # web crawler ------------------------------------------------
+        send_briefly_message(event,userid,titles,brieflys)
 
     def on_enter_casual(self, event):
         print("Entering Casual")
@@ -83,6 +100,11 @@ class TocMachine(GraphMachine):
         send_text_message(reply_token, "Trigger Casual")
         userid = event.source.user_id
         show_top3_casual(userid)
+        # web crawler ------------------------------------------------
+        link = "https://zh-hant.10besty.com/best-casual-games/"
+        titles,unuse2,unuse3,brieflys = web_crawler(link)
+        # web crawler ------------------------------------------------
+        send_briefly_message(event,userid,titles,brieflys)
 
     def on_enter_coorperation(self, event):
         print("Entering coorperation")
@@ -90,6 +112,11 @@ class TocMachine(GraphMachine):
         send_text_message(reply_token, "Trigger coorperation")
         userid = event.source.user_id
         show_top3_coorperation(userid)
+        # web crawler ------------------------------------------------
+        link = "https://zh-hant.10besty.com/best-co-op-games/"
+        titles,unuse2,unuse3,brieflys = web_crawler(link)
+        # web crawler ------------------------------------------------
+        send_briefly_message(event,userid,titles,brieflys)
 
     def on_enter_show_bestgame(self, event):
         print("Entering best game 2021")
@@ -97,6 +124,11 @@ class TocMachine(GraphMachine):
         send_text_message(reply_token, "Trigger show best game")
         userid = event.source.user_id
         show_bestgame_2021(userid)
+        # web crawler ------------------------------------------------
+        link = "https://zh-hant.10besty.com/best-steam-games/"
+        titles,unuse2,unuse3,brieflys = web_crawler(link)
+        # web crawler ------------------------------------------------
+        send_briefly_message(event,userid,titles,brieflys)
 
     def on_enter_briefly_bestgame(self, event):
         print("Entering briefly bestgame")
@@ -105,9 +137,9 @@ class TocMachine(GraphMachine):
         userid = event.source.user_id
         # web crawler ------------------------------------------------
         link = "https://zh-hant.10besty.com/best-steam-games/"
-        unuse1,unuse2,unuse3,brieflys = web_crawler(link)
+        titles,unuse2,unuse3,brieflys = web_crawler(link)
         # web crawler ------------------------------------------------
-        send_briefly_message(event,userid,brieflys)
+        send_briefly_message(event,userid,titles,brieflys)
         self.go_back()
 
     def on_enter_game_classify(self, event):

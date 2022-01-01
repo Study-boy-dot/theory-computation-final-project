@@ -86,24 +86,26 @@ def webhook_handler():
         # Create a machine for new user
         if event.source.user_id not in machines:
             machines[event.source.user_id] = create_machine()
+            # machines[event.source.user_id].init(event)
 
         response = machines[event.source.user_id].advance(event)
 
         #print(f"\nFSM STATE: {machines[event.source.user_id].state}")
 
         if response == False:
-            send_text_message(event.reply_token, "Not Entering any State")
+            send_text_message(event.reply_token, "Invalid command, try again")
 
     return "OK"
 
 
 @app.route("/show-fsm", methods=["GET"])
 def show_fsm():
-    machines.get_graph().draw("fsm.png", prog="dot", format="png")
-    return send_file("fsm.png", mimetype="image/png")
+    machine.get_graph().draw("fsm.png", prog="dot", format="png")
+    # return send_file("fsm.png", mimetype="image/png")
 
 
 if __name__ == "__main__":
-    port = os.environ.get("PORT", 8000)
-    app.run(host="0.0.0.0", port=port, debug=True)
+    show_fsm()
+    # port = os.environ.get("PORT", 8000)
+    # app.run(host="0.0.0.0", port=port, debug=True)
 
