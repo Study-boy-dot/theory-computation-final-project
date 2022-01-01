@@ -1,5 +1,7 @@
 import os
+from re import template
 import bs4
+from linebot.models.actions import MessageAction
 import requests
 import urllib.request as req
 import numpy as np
@@ -50,6 +52,64 @@ def show_manual(id):
     )
     
     line_bot_api.push_message(id, message)
+    return "OK"
+
+def send_button_carousel(id,imgs,urls,titles):
+    line_bot_api = LineBotApi(channel_access_token)
+    message = TemplateSendMessage(
+        type="carousel",
+        alt_text='Carousel template',
+        template=CarouselTemplate(
+            columns=[
+                CarouselColumn(
+                    thumbnail_image_url=imgs[0],
+                    title=titles[0],
+                    text='內容簡介+購買鏈接',
+                    actions=[
+                        MessageTemplateAction(
+                            label='內容簡介',
+                            text='第1:'+titles[0]+'內容簡介'
+                        ),
+                        URITemplateAction(
+                            label='購買鏈接（Steam）',
+                            uri=urls[0]
+                        )
+                    ]
+                ),
+                CarouselColumn(
+                    thumbnail_image_url=imgs[1],
+                    title=titles[1],
+                    text='內容簡介+購買鏈接',
+                    actions=[
+                        MessageTemplateAction(
+                            label='內容簡介',
+                            text='第2:'+titles[1]+'內容簡介'
+                        ),
+                        URITemplateAction(
+                            label='購買鏈接（Steam）',
+                            uri=urls[1]
+                        )
+                    ]
+                ),
+                CarouselColumn(
+                    thumbnail_image_url=imgs[2],
+                    title=titles[2],
+                    text='內容簡介+購買鏈接',
+                    actions=[
+                        MessageTemplateAction(
+                            label='內容簡介',
+                            text='第3:'+titles[2]+'內容簡介'
+                        ),
+                        URITemplateAction(
+                            label='購買鏈接（Steam）',
+                            uri=urls[2]
+                        )
+                    ]
+                )
+            ]
+        )
+    )
+    line_bot_api.push_message(id, message)
 
     return "OK"
 
@@ -89,8 +149,75 @@ def send_button_game_classify(id):
 def show_bestgame_2021(id):
     line_bot_api = LineBotApi(channel_access_token)
     # web crawler ------------------------------------------------
-    url = "https://zh-hant.10besty.com/best-steam-games/"
-    request = req.Request(url,headers={
+    link = "https://zh-hant.10besty.com/best-steam-games/"
+    titles,imgs,urls,brieflys = web_crawler(link)
+    # web crawler ------------------------------------------------
+
+    # message packaging ------------------------------------------
+    if send_button_carousel(id,imgs,urls,titles) == "OK":
+        return "OK"
+
+def show_top3_rpg(id):
+    line_bot_api = LineBotApi(channel_access_token)
+    # web crawler ------------------------------------------------
+    link = "https://zh-hant.10besty.com/best-rpg-games/"
+    titles,imgs,urls,brieflys = web_crawler(link)
+    # web crawler ------------------------------------------------
+
+    # message packaging ------------------------------------------
+    if send_button_carousel(id,imgs,urls,titles) == "OK":
+        return "OK"
+    
+def show_top3_slg(id):
+    line_bot_api = LineBotApi(channel_access_token)
+    # web crawler ------------------------------------------------
+    link = "https://zh-hant.10besty.com/best-strategy-games/"
+    titles,imgs,urls,brieflys = web_crawler(link)
+    # web crawler ------------------------------------------------
+
+    # message packaging ------------------------------------------
+    if send_button_carousel(id,imgs,urls,titles) == "OK":
+        return "OK"    
+    
+def show_top3_casual(id):
+    line_bot_api = LineBotApi(channel_access_token)
+    # web crawler ------------------------------------------------
+    link = "https://zh-hant.10besty.com/best-casual-games/"
+    titles,imgs,urls,brieflys = web_crawler(link)
+    # web crawler ------------------------------------------------
+
+    # message packaging ------------------------------------------
+    if send_button_carousel(id,imgs,urls,titles) == "OK":
+        return "OK"
+
+def show_top3_coorperation(id):
+    line_bot_api = LineBotApi(channel_access_token)
+    # web crawler ------------------------------------------------
+    link = "https://zh-hant.10besty.com/best-co-op-games/"
+    titles,imgs,urls,brieflys = web_crawler(link)
+    # web crawler ------------------------------------------------
+
+    # message packaging ------------------------------------------
+    if send_button_carousel(id,imgs,urls,titles) == "OK":
+        return "OK"
+
+def send_briefly_message(event,id,brieflys):
+    line_bot_api = LineBotApi(channel_access_token)
+    text = event.message.text
+    if text[1] == '1':
+        line_bot_api.push_message(id,TextSendMessage(brieflys[0]))
+    elif text[1] == '2':
+        line_bot_api.push_message(id,TextSendMessage(brieflys[1]))
+    elif text[1] == '3':
+        line_bot_api.push_message(id,TextSendMessage(brieflys[2]))
+    else:
+        return "NOT OK"
+
+    return "OK"
+
+def web_crawler(link):
+    # web crawler ------------------------------------------------
+    request = req.Request(link,headers={
         "Content-Type":"text/html; charset=UTF-8",
         "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"
 
@@ -105,70 +232,20 @@ def show_bestgame_2021(id):
     titles = []
     imgs = []
     urls = []
-    uptexts = []
-    labels = []
+    brieflys = []
     for container in containers:
         game = container.findChildren('td')
         img = container.findNext('div').findChild('img').get('data-src')
         td = container.findNextSibling('table').findChildren('td')
         url = td[3].findChild('a').get('href')
-        uptext = container.findNextSibling('p')
+        briefly = container.findNextSibling('p')
         if(i<3):
             titles.append(game[1].text)
             imgs.append(img)
             urls.append(url)
-            uptexts.append(uptext.text)
-            labels.append("購買鏈接")
+            brieflys.append(briefly.text)
         i+=1
     # web crawler ------------------------------------------------
 
-    # message packaging ------------------------------------------
-
-    if send_button_carousel(id,imgs,urls,titles,uptexts,labels) == "OK":
-        return "OK"
-
-def send_button_carousel(id,imgs,urls,titles,uptexts,labels):
-    line_bot_api = LineBotApi(channel_access_token)
-    message = TemplateSendMessage(
-        alt_text='Carousel template',
-        template=CarouselTemplate(
-            columns=[
-                CarouselColumn(
-                    thumbnail_image_url=imgs[0],
-                    title=titles[0],
-                    text=uptexts[0],
-                    actions=[
-                        URITemplateAction(
-                            label=labels[0],
-                            uri=urls[0]
-                        )
-                    ]
-                ),
-                CarouselColumn(
-                    thumbnail_image_url=imgs[1],
-                    title=titles[1],
-                    text=uptexts[1],
-                    actions=[
-                        URITemplateAction(
-                            label=labels[1],
-                            uri=urls[1]
-                        )
-                    ]
-                ),
-                CarouselColumn(
-                    thumbnail_image_url=imgs[2],
-                    title=titles[2],
-                    text=uptexts[2],
-                    actions=[
-                        URITemplateAction(
-                            label=labels[2],
-                            uri=urls[2]
-                        )
-                    ]
-                )
-            ]
-        )
-    )
-    line_bot_api.push_message(id, message)
-
-    return "OK"
+    return titles,imgs,urls,brieflys
+    
