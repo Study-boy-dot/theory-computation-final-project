@@ -52,9 +52,7 @@ def callback():
         if not isinstance(event.message, TextMessage):
             continue
 
-        line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(text=event.message.text)
-        )
+        send_text_message(event.source.user_id, event.message.text)
 
     return "OK"
 
@@ -93,7 +91,7 @@ def webhook_handler():
         #print(f"\nFSM STATE: {machines[event.source.user_id].state}")
 
         if response == False:
-            send_text_message(event.reply_token, "Invalid command, try again")
+            send_text_message(event.source.user_id, "Invalid command, try again")
 
     return "OK"
 
