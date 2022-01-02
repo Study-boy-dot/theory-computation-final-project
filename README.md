@@ -3,7 +3,7 @@
 ## Finite State Machine Graph
 <img src='https://user-images.githubusercontent.com/80616480/147854848-508b1540-dd96-4d17-abe9-df56af42f013.png' width = 1000/>
 
-## Run locaklly
+## Run locally
 Run python file app.py
 Run with ngrok port 8000
 Edit linedeveloper webhook url and postfixe with /webhook
@@ -55,25 +55,37 @@ heroku git:remote -a {HEROKU_APP_NAME}
 
 Upload project
 
+```
 git add .
-
 git commit -m "Add code"
-
 git push -f heroku master
+```
 
 Set Environment - Line Messaging API Secret Keys
 
+```
 heroku config:set LINE_CHANNEL_SECRET=your_line_channel_secret
-
 heroku config:set LINE_CHANNEL_ACCESS_TOKEN=your_line_channel_access_token
-
+```
 pygraphviz problem in heroku
 
 run commands below can solve the problems
 
+```
 heroku buildpacks:set heroku/python
-
 heroku buildpacks:add --index 1 heroku-community/apt
+```
+
+### Deploy with Github
+must include Procfile and requirement.txt , runfile.txt(optional)
+push to github branch master and deploy
+
+### Link of server
+
+https://{my_server_name}.herokuapp.com/webhook
+
+### My server link in heroku
+https://toc-final-project-2021.herokuapp.com/webhook
 
 ### Addition Function
 Web-crawler
