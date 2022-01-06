@@ -52,6 +52,10 @@ def show_manual(id):
                             label='FSM圖',
                             text='fsm'
                         ),
+                        MessageTemplateAction(
+                            label='demo',
+                            text='demo_state'
+                        ),
                     ]
             )
     )

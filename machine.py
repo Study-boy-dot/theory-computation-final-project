@@ -3,13 +3,19 @@ from fsm import TocMachine
 def create_machine():
     machine = TocMachine(
         states=["user", "manual","show_bestgame","game_classify",
-                    "rpg","slg","casual","coorperation","fsm"],
+                    "rpg","slg","casual","coorperation","fsm","demo_state"],
         transitions=[
             {
                 "trigger": "advance",
                 "source": "user",
                 "dest": "manual",
                 "conditions": "is_going_to_manual",
+            },
+            {
+                "trigger": "advance",
+                "source": "manual",
+                "dest": "demo_state",
+                "conditions": "is_going_to_demo_state",
             },
             {
                 "trigger": "advance",

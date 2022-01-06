@@ -8,6 +8,14 @@ class TocMachine(GraphMachine):
     def __init__(self, **machine_configs):
         self.machine = GraphMachine(model=self, **machine_configs)
 
+    def is_going_to_demo_state(self,event):
+        text = event.message.text
+        return text.lower() == "demo_state"
+
+    def on_enter_demo_state(self,event):
+        userid = event.source.user_id
+        send_text_message(userid,"i am in demo state")
+
     def is_going_to_rpg(self,event):
         text = event.message.text
         return text.lower() == "角色扮演" 
